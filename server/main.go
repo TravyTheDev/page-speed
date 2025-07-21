@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"page-speed-server/api"
 	"page-speed-server/db"
+	"page-speed-server/services/users"
 )
 
 func main() {
@@ -13,10 +16,26 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 
-	server := api.NewAPIServer(port, db)
+	if len(os.Args) > 1 {
+		command := os.Args[1]
+		switch command {
+		case "seed":
+			users.SeedUsers(db)
+			return
+		case "run":
+			server := api.NewAPIServer(port, db)
 
-	if err := server.Run(); err != nil {
-		log.Fatal(err)
+			if err := server.Run(); err != nil {
+				log.Fatal(err)
+			}
+			return
+		default:
+			fmt.Printf("Unknown command: %s\n", command)
+			fmt.Println("Usage: go run . [seed <num>] | [clean] | [serve]")
+			os.Exit(1)
+		}
 	}
+
 }
