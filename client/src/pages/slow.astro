@@ -1,0 +1,14 @@
+---
+const fetchData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  return {
+    message: "Data loaded after a long wait!"
+  };
+};
+
+const data = await fetchData();
+---
+<div>
+    <h1>{data.message}</h1>
+    <h1>slow</h1>
+</div>
