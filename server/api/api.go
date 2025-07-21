@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"page-speed-server/services/pets"
+	"page-speed-server/services/users"
 )
 
 type APIServer struct {
@@ -25,6 +27,14 @@ func (s *APIServer) Run() error {
 		Addr:    s.addr,
 		Handler: router,
 	}
+	userStore := users.NewUserStore(s.db)
+	petStore := pets.NewPetStore(s.db)
+
+	userHandler := users.NewHandler(*userStore, *petStore)
+	petHander := pets.NewHandler(*petStore)
+
+	userHandler.RegisterRoutes(router)
+	petHander.RegisterRoutes(router)
 
 	fmt.Println("listening on: ", s.addr)
 	return server.ListenAndServe()

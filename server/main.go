@@ -6,6 +6,7 @@ import (
 	"os"
 	"page-speed-server/api"
 	"page-speed-server/db"
+	"page-speed-server/services/pets"
 	"page-speed-server/services/users"
 )
 
@@ -22,7 +23,12 @@ func main() {
 		command := os.Args[1]
 		switch command {
 		case "seed":
-			users.SeedUsers(db)
+			if err := pets.SeedPets(db); err != nil {
+				log.Fatal(err)
+			}
+			if err := users.SeedUsers(db); err != nil {
+				log.Fatal(err)
+			}
 			return
 		case "run":
 			server := api.NewAPIServer(port, db)
