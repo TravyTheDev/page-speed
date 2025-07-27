@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"page-speed-server/services/pets"
 )
@@ -22,6 +23,7 @@ func (h *UserHandler) RegisterRoutes(router *http.ServeMux) {
 	router.HandleFunc("/get_users", h.getUsers)
 	router.HandleFunc("/get_users_with_pets_bad", h.getUsersWithPetsBadQuery)
 	router.HandleFunc("/get_users_with_pets_good", h.getUsersWithPetsGoodQuery)
+	router.HandleFunc("/search_users", h.searchUser)
 }
 
 func (h *UserHandler) getUsers(w http.ResponseWriter, r *http.Request) {
@@ -126,6 +128,23 @@ func (h *UserHandler) getUsersWithPetsGoodQuery(w http.ResponseWriter, r *http.R
 		}
 	}
 
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	if err := json.NewEncoder(w).Encode(usersWithPets); err != nil {
+		http.Error(w, "error getting user", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *UserHandler) searchUser(w http.ResponseWriter, r *http.Request) {
+	userName := r.URL.Query().Get("userName")
+	usersWithPets, err := h.userStore.SearchUser(userName)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "error getting users", http.StatusInternalServerError)
+		return
+	}
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
