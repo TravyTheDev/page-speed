@@ -22,10 +22,11 @@ func NewAPIServer(addr string, db *sql.DB) *APIServer {
 
 func (s *APIServer) Run() error {
 	router := http.NewServeMux()
-
+	v1 := http.NewServeMux()
+	v1.Handle("/api/v1/", http.StripPrefix("/api/v1", router))
 	server := http.Server{
 		Addr:    s.addr,
-		Handler: router,
+		Handler: v1,
 	}
 	userStore := users.NewUserStore(s.db)
 	petStore := pets.NewPetStore(s.db)

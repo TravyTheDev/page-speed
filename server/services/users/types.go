@@ -1,11 +1,14 @@
 package users
 
+import "page-speed-server/services/pets"
+
 type User struct {
-	Name  string
-	Email string
+	ID       int
+	UserName string
+	Email    string
 }
 
-type UserPet struct {
-	UserID int
-	PetID  int
+type UserWithPet struct {
+	UserName string
+	Pet      pets.PetWithFavoriteFood
 }

@@ -14,7 +14,7 @@ func NewUserStore(db *sql.DB) *UserStore {
 
 func (s *UserStore) GetUsers() ([]*User, error) {
 	users := make([]*User, 0)
-	stmt := `SELECT username, email FROM USERS`
+	stmt := `SELECT id, username, email FROM USERS`
 	rows, err := s.db.Query(stmt)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,8 @@ func (s *UserStore) GetUsers() ([]*User, error) {
 func scanRowsIntoUser(rows *sql.Rows) (*User, error) {
 	user := new(User)
 	err := rows.Scan(
-		&user.Name,
+		&user.ID,
+		&user.UserName,
 		&user.Email,
 	)
 

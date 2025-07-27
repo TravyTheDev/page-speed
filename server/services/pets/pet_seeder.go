@@ -9,7 +9,7 @@ import (
 func generateFakePet() Pet {
 	return Pet{
 		Name:   gofakeit.LastName(),
-		Aminal: gofakeit.Animal(),
+		Aninal: gofakeit.Animal(),
 	}
 }
 
@@ -21,12 +21,12 @@ func generatePetFavoriteFood(petID int) PetFavoriteFood {
 }
 
 func SeedPets(db *sql.DB) error {
-	count := 10
-	for i := 1; i <= 10; i++ {
+	count := 500
+	for i := 1; i <= 500; i++ {
 		fakePet := generateFakePet()
-		stmt := `INSERT INTO pets (name, animal) VALUES (?, ?)`
+		stmt := `INSERT INTO pets (name, animal, user_id) VALUES (?, ?, ?)`
 
-		_, err := db.Exec(stmt, fakePet.Name, fakePet.Aminal)
+		_, err := db.Exec(stmt, fakePet.Name, fakePet.Aninal, i)
 		if err != nil {
 			return err
 		}

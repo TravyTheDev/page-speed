@@ -2,7 +2,6 @@ package pets
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -30,13 +29,12 @@ func (h *PetHandler) getPetsWithFavoriteFoodBadQuery(w http.ResponseWriter, r *h
 	}
 	for _, pet := range pets {
 		favoriteFood, err := h.petStore.GetFavoriteFoodFromPetID(pet.ID)
-		fmt.Println(favoriteFood)
 		if err != nil {
 			http.Error(w, "error getting favorite food", http.StatusInternalServerError)
 		}
 		petWithFood := PetWithFavoriteFood{
 			Name:         pet.Name,
-			Animal:       pet.Aminal,
+			Animal:       pet.Aninal,
 			FavoriteFood: favoriteFood.Food,
 		}
 		petsWithFood = append(petsWithFood, petWithFood)
@@ -49,5 +47,3 @@ func (h *PetHandler) getPetsWithFavoriteFoodBadQuery(w http.ResponseWriter, r *h
 		return
 	}
 }
-
-func (h *PetHandler) getPetsWithFavoriteFoodGoodQuery() {}

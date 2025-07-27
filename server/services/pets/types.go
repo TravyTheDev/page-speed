@@ -3,7 +3,8 @@ package pets
 type Pet struct {
 	ID     int
 	Name   string
-	Aminal string
+	Aninal string
+	UserID int
 }
 
 type PetFavoriteFood struct {
