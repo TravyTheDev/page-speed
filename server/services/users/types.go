@@ -9,6 +9,7 @@ type User struct {
 }
 
 type UserWithPet struct {
-	UserName string
-	Pet      pets.PetWithFavoriteFood
+	ID       int                      `json:"id"`
+	UserName string                   `json:"username"`
+	Pet      pets.PetWithFavoriteFood `json:"pet"`
 }

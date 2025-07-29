@@ -13,7 +13,7 @@ type PetFavoriteFood struct {
 }
 
 type PetWithFavoriteFood struct {
-	Name         string
-	Animal       string
-	FavoriteFood string
+	Name         string `json:"name"`
+	Animal       string `json:"animal"`
+	FavoriteFood string `json:"favoriteFood"`
 }

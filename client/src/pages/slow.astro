@@ -1,14 +1,51 @@
 ---
-const fetchData = async () => {
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  return {
-    message: "Data loaded after a long wait!"
-  };
-};
+type Pet = {
+    name: string;
+    animal: string;
+    favoriteFood: string;
+}
 
-const data = await fetchData();
+type UserWithPet = {
+    id: number;
+    username: string;
+    pet: Pet;
+}
+
+const res = await fetch("http://localhost:8000/api/v1/get_users_with_pets_bad")
+const users: UserWithPet[] = await res.json()
 ---
 <div>
-    <h1>{data.message}</h1>
-    <h1>slow</h1>
+    <select name="" id="user-select">
+      <option disabled selected>Select a user</option>
+        {users.map((user) => {
+            return <option id={`${user.id}`} value={user.id}>{user.username}</option>
+        })}
+    </select>
+    <div>
+      <h2 id="user-name"></h2>
+      <h3 id="pet"></h3>
+      <h3 id="animal"></h3>
+      <h3 id="favorite-food"></h3>
+    </div>
 </div>
+
+<script define:vars={{ users }}>
+  const userSelect = document.getElementById('user-select')
+  const userName = document.getElementById('user-name')
+  const pet = document.getElementById('pet')
+  const animal = document.getElementById('animal')
+  const favoriteFood = document.getElementById('favorite-food')
+
+  const selectUser = (id) => {
+    const selectedUser = users.find((user) => user.id === Number(id))
+    console.log(selectedUser)
+    userName.innerText = selectedUser.username
+    pet.innerText = selectedUser.pet.name
+    animal.innerText = selectedUser.pet.animal
+    favoriteFood.innerText = selectedUser.pet.favoriteFood
+  }
+
+   userSelect.addEventListener('change', (e) => {
+    selectUser(e.target.value)
+  })
+</script>

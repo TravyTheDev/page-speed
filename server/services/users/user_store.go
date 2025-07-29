@@ -36,6 +36,7 @@ func (s *UserStore) SearchUser(text string) ([]*UserWithPet, error) {
 	search := "%" + strings.ReplaceAll(text, " ", "%") + "%"
 	stmt := `
     SELECT
+		users.id,
         users.username,
         pets.name,
         pets.animal,
@@ -54,6 +55,7 @@ func (s *UserStore) SearchUser(text string) ([]*UserWithPet, error) {
 	for rows.Next() {
 		uwp := new(UserWithPet)
 		err := rows.Scan(
+			&uwp.ID,
 			&uwp.UserName,
 			&uwp.Pet.Name,
 			&uwp.Pet.Animal,

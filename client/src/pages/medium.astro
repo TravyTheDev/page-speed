@@ -1,28 +1,19 @@
 ---
-import Test from "../components/Test.vue";
-
-
 ---
 <div>
-    <h1 id="test">loading</h1>
-    <h1>medium</h1>
-    <Test client:load />
+  <select id="user-select">
+    <option disabled selected>Select a user</option>
+  </select>
+
+  <div>
+    <h2 id="user-name"></h2>
+    <h3 id="pet"></h3>
+    <h3 id="animal"></h3>
+    <h3 id="favorite-food"></h3>
+  </div>
 </div>
 
 <script>
-    const fetchData = async () => {
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  return {
-    message: "Data loaded after a long wait!"
-  };
-};
-const element = document.getElementById("test")
-
-const setData = async () => {
-    const data = await fetchData();
-    if (element) {
-        element.innerText = data.message
-    }
-}
-setData()
+  import { initUserSelector } from '../scripts/fetch-users';
+  initUserSelector();
 </script>

@@ -62,6 +62,7 @@ func (h *UserHandler) getUsersWithPetsBadQuery(w http.ResponseWriter, r *http.Re
 			return
 		}
 		userWithPet := UserWithPet{
+			ID:       user.ID,
 			UserName: user.UserName,
 			Pet: pets.PetWithFavoriteFood{
 				Name:         pet.Name,
@@ -117,6 +118,7 @@ func (h *UserHandler) getUsersWithPetsGoodQuery(w http.ResponseWriter, r *http.R
 		user := userMap[userID]
 		for _, pet := range userPets {
 			userWithPet := UserWithPet{
+				ID:       user.ID,
 				UserName: user.UserName,
 				Pet: pets.PetWithFavoriteFood{
 					Name:         pet.Name,
