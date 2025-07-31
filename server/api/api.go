@@ -3,7 +3,9 @@ package api
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"page-speed-server/services/pets"
 	"page-speed-server/services/users"
 
@@ -33,23 +35,22 @@ func (s *APIServer) Run() error {
 
 	userHandler.RegisterRoutes(router)
 	petHander.RegisterRoutes(router)
-
+	frontUrl := os.Getenv("FRONT_URL")
+	frontUrlWWW := os.Getenv("FRONT_URL_WWW")
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:4321"},
+		AllowedOrigins:   []string{frontUrl, frontUrlWWW},
 		AllowCredentials: true,
 		AllowedMethods:   []string{"OPTIONS", http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPut, http.MethodPatch},
 	})
 	handler := c.Handler(router)
 	v1 := http.NewServeMux()
-	v1.Handle("/api/v1/", http.StripPrefix("/api/v1", handler))
+	v1.Handle("/api/v2/", http.StripPrefix("/api/v2", handler))
 	server := http.Server{
 		Addr:    s.addr,
 		Handler: v1,
 	}
 
 	fmt.Println("listening on: ", s.addr)
-	if err := server.ListenAndServe(); err != nil {
-		return err
-	}
+	log.Fatal(server.ListenAndServe())
 	return nil
 }

@@ -38,6 +38,12 @@ type UserWithPet = {
     pet: Pet;
 }
 
+interface Props {
+    SERVER_URL: string
+}
+
+const props = defineProps<Props>()
+
 const searchWord = ref<string>("")
 const searchResults = ref<UserWithPet[]>()
 const controller = ref<AbortController>()
@@ -79,7 +85,7 @@ const search = async () => {
         const params = new URLSearchParams({
             userName: searchWord.value
         })
-        const res = await fetch(`http://localhost:8000/api/v1/search_users?${params.toString()}`, {
+        const res = await fetch(`${props.SERVER_URL}/api/v2/search_users?${params.toString()}`, {
             signal: controller.value.signal
         })
         const data = await res.json()

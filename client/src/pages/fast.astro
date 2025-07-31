@@ -1,8 +1,8 @@
 ---
 import SearchUsers from "../components/SearchUsers.vue";
-
-
+export const prerender = false
+const SERVER_URL = import.meta.env.PUBLIC_SERVER_URL;
 ---
 <div>
-    <SearchUsers client:load />
+    <SearchUsers SERVER_URL={SERVER_URL} client:load />
 </div>

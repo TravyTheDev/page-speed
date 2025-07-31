@@ -9,7 +9,7 @@ type UserWithPet = {
   username: string;
   pet: Pet;
 };
-
+const SERVER_URL = import.meta.env.PUBLIC_SERVER_URL;
 export async function initUserSelector() {
   const userSelect = document.getElementById('user-select') as HTMLSelectElement;
   const userName = document.getElementById('user-name')!;
@@ -17,7 +17,7 @@ export async function initUserSelector() {
   const animal = document.getElementById('animal')!;
   const favoriteFood = document.getElementById('favorite-food')!;
 
-  const res = await fetch('http://localhost:8000/api/v1/get_users_with_pets_bad');
+  const res = await fetch(`${SERVER_URL}/api/v2/get_users_with_pets_good`);
   const users: UserWithPet[] = await res.json();
 
   users.forEach((user) => {
